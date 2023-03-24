@@ -1,26 +1,16 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+<menu_inicio></menu_inicio>
+</div>
+{{material_script}}
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import menu_inicio from "./components/menu.vue";
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    menu_inicio,
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

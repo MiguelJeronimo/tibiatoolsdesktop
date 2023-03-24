@@ -19,6 +19,8 @@ npm run build
 ```
 npm run lint
 ```
+### Iniciar la ventana de electron del proyecto
+npm run electron:serve
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
