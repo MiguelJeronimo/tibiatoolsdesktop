@@ -1,6 +1,6 @@
 <script>
 export default {
-    name: 'personajes',
+    name: 'personajes_tibia',
 }
 </script>
 

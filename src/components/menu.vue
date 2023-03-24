@@ -1,6 +1,7 @@
 <script>
 import blessings_vista from "../components/blessings.vue";
 import experiencia_compartida from "../components/experiencia_compartida.vue";
+import personajes_tibia from "../components/personajes.vue"
 export default {
     name: 'menu_inicio',
     data(){
@@ -10,7 +11,8 @@ export default {
     }, 
     components:{
       blessings_vista,
-      experiencia_compartida
+      experiencia_compartida,
+      personajes_tibia
     }, methods:{
         actualizarComponente(){
           this.$forceUpdate
@@ -41,7 +43,7 @@ export default {
       <nav class="mdl-navigation">
         <a class="mdl-navigation__link"  @click=" menus = 'blesings_vista'">Blessings</a>
         <a class="mdl-navigation__link"  @click="menus='experiencia_compartida'">Experiencia Compartida</a>
-        <a class="mdl-navigation__link" >Personajes</a>
+        <a class="mdl-navigation__link"  @click="menus='personajes'">Personajes</a>
         <a class="mdl-navigation__link" >Stamina</a>
         <a class="mdl-navigation__link" >Mundos</a>
         <a class="mdl-navigation__link" >Información de Mundos</a>
@@ -51,6 +53,7 @@ export default {
 </div>
 <blessings_vista v-show="menus === 'blesings_vista'"></blessings_vista>
 <experiencia_compartida v-show="menus === 'experiencia_compartida'"></experiencia_compartida>
+<personajes_tibia v-show="menus === 'personajes'"></personajes_tibia>
 </template>
 
 <style>
