@@ -21,6 +21,8 @@ export default {
             Last_Login:'',
             comment:'',
             Account_Status:'',
+            houses: '',
+            muertes: '',
         }
     },
     methods:{
@@ -32,10 +34,14 @@ export default {
                     if(name ==''){
                         this.tabla_personajes = false
                         this.mensaje_error=true
+                        this.tabla_casas = false
+                        this.tabla_muertes = false
                     } else{
                         //ponemos en true la tabla de personajes para que se pinte
                         this.tabla_personajes = true
                         this.mensaje_error = false
+                        this.tabla_casas = false
+                        this.tabla_muertes = false
                         this.name = name
                         this.title = data.characters.character.title;
                         this.sex = data.characters.character.sex;
@@ -55,7 +61,23 @@ export default {
                         this.informacion = data.characters.account_information
                         this.otros_personajes = data.characters.other_characters
                         let casado = data.characters.character.married_to
-                        this.casado = Casado(casado)           
+                        this.casado = Casado(casado)
+                        // Validar si el personaje tiene casa
+                        let casa = data.characters.character.houses
+                        this.houses =  Houses(data.characters.character.houses)
+                        if (casa == undefined) {
+                          this.tabla_casas = false
+                        } else{
+                          this.tabla_casas = true
+                        }
+                        //validando si el personaje tiene muertes
+                        let muertes = data.characters.deaths
+                        this.muertes = Muertes(muertes)
+                        if (muertes == undefined) {
+                          this.tabla_muertes = false
+                        } else{
+                          this.tabla_muertes = true
+                        }
                     }   
                 })
             } else{
@@ -65,6 +87,8 @@ export default {
                 leyendaError.classList.add('mdl-textfield__error-validacion')
                 leyendaError.innerHTML = 'Ingrese el nombre del personaje'
                 this.tabla_personajes= false
+                this.tabla_casas = false
+                this.tabla_muertes = false
             }
         }
     }
@@ -87,7 +111,7 @@ async function buscarPersonaje(nombre) {
  * que puede o no puede tener
  */
 
- function Comentario(comentario) {
+function Comentario(comentario) {
     if (comentario !== undefined) {
       return comentario;      
     } else {
@@ -108,6 +132,26 @@ function Guild(rango, nombreGuild) {
     } else{
         return 'No tiene guild';
     }
+}
+
+function Houses(houses) {
+  let plantilla = new Array()
+  if(houses !== undefined){
+    houses.forEach(casas => {
+      plantilla.push(`${casas.name}, ${casas.town}, ${casas.paid}`)
+    })
+    return plantilla
+  } else{
+      return plantilla = ""
+  }
+}
+
+function Muertes(muertes) {
+  if(muertes !== undefined){
+      return muertes
+  } else{
+      return muertes = ""
+  }
 }
 
 
@@ -206,9 +250,28 @@ function Guild(rango, nombreGuild) {
         </spam>
 </div>
 
-<div class="tabla" id="tabla-houses" v-if="tabla_casas===true"> 
+<div class="tabla" id="tabla-houses" v-if="tabla_casas===true">
+  <table class="mdl-data-table mdl-js-data-table with=1000px">
+          <caption>Casas</caption>
+          <tbody id="tabla">
+            <tr v-for="house in houses" :key="house">
+              <td class="mdl-data-table__cell--non-numeric">House</td>
+              <td class="mdl-data-table__cell--non-numeric">{{house}}</td>
+            </tr>
+          </tbody>
+    </table>
 </div>
 <div class="tabla" id="tabla-muertes" v-if="tabla_muertes===true"> 
+  <table class="mdl-data-table mdl-js-data-table with=1000px">
+          <caption>Muertes</caption>
+          <tbody id="tabla">
+            <tr v-for="muerte in muertes" :key="muerte">
+              <td class="mdl-data-table__cell--non-numeric">level: {{muerte.level}}</td>
+              <td class="mdl-data-table__cell--non-numeric">{{muerte.time}}</td>
+              <td class="mdl-data-table__cell--non-numeric">{{muerte.reason}}</td>
+            </tr>
+          </tbody>
+    </table>
 </div>
 <div class="tabla" id="tabla-informacion" v-if="tabla_informacion===true"> 
 </div>
