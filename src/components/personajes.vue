@@ -23,6 +23,9 @@ export default {
             Account_Status:'',
             houses: '',
             muertes: '',
+            information: '',
+            otros_personajes:'',
+            status_personaje:''
         }
     },
     methods:{
@@ -36,12 +39,16 @@ export default {
                         this.mensaje_error=true
                         this.tabla_casas = false
                         this.tabla_muertes = false
+                        this.tabla_informacion = false
+                        this.tabla_otros_personajes = false
                     } else{
                         //ponemos en true la tabla de personajes para que se pinte
                         this.tabla_personajes = true
                         this.mensaje_error = false
                         this.tabla_casas = false
                         this.tabla_muertes = false
+                        this.tabla_informacion = false
+                        this.tabla_otros_personajes = false
                         this.name = name
                         this.title = data.characters.character.title;
                         this.sex = data.characters.character.sex;
@@ -78,6 +85,22 @@ export default {
                         } else{
                           this.tabla_muertes = true
                         }
+                        //validando la información de la cuenta del personaje
+                        let account_information = data.characters.account_information
+                        this.information = accountInformation(account_information)
+                        if (account_information === '') {
+                          this.tabla_informacion = false
+                        } else{
+                          this.tabla_informacion = true
+                        }
+                        //validando si tiene mas peronsajes en la cuenta
+                        let otros_personajes = data.characters.other_characters
+                        this.otros_personajes = otrosPersonajes(otros_personajes)
+                        if (otros_personajes == undefined) {
+                          this.tabla_otros_personajes = false
+                        } else{
+                          this.tabla_otros_personajes = true
+                        }
                     }   
                 })
             } else{
@@ -89,6 +112,8 @@ export default {
                 this.tabla_personajes= false
                 this.tabla_casas = false
                 this.tabla_muertes = false
+                this.tabla_informacion = false
+                this.tabla_otros_personajes = false
             }
         }
     }
@@ -154,6 +179,21 @@ function Muertes(muertes) {
   }
 }
 
+function accountInformation(informacion) {
+  if(informacion.created !== undefined){
+    console.log(informacion)  
+    return informacion
+  } else{
+    return informacion = ''
+  }
+}
+function otrosPersonajes(personajes) {
+  if(personajes !== undefined){
+    return personajes
+  } else{
+    return personajes = ''
+  }
+}
 
 
 </script>
@@ -176,7 +216,7 @@ function Muertes(muertes) {
    v-on:click.prevent="BuscarPersonaje()"
    id="calcular" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent--purple separador-boton">
     Buscar
-   </button >
+   </button>
   </form>
   </div>
 </div>
@@ -274,8 +314,45 @@ function Muertes(muertes) {
     </table>
 </div>
 <div class="tabla" id="tabla-informacion" v-if="tabla_informacion===true"> 
+  <table class="mdl-data-table mdl-js-data-table with=1000px">
+          <caption>Información de la cuenta</caption>
+          <tbody id="tabla">
+            <tr>
+              <td class="mdl-data-table__cell--non-numeric">Created:</td>
+              <td class="mdl-data-table__cell--non-numeric">{{information.created}}</td>
+            </tr>
+            <tr>
+              <td class="mdl-data-table__cell--non-numeric">Loyalty Title:</td>
+              <td class="mdl-data-table__cell--non-numeric">{{information.loyalty_title}}</td>
+            </tr>
+          </tbody>
+    </table>
 </div>
-<div class="tabla" id="tabla-otros-personajes" v-if="tabla_otros_personajes===true"> 
+<div class="tabla" id="tabla-otros-personajes" v-if="tabla_otros_personajes===true">
+  <table class="mdl-data-table mdl-js-data-table with=1000px">
+          <caption>Otros personajes</caption>
+          <thead>
+          <tr>
+            <th class="mdl-data-table__cell--non-numeric">Nombre</th>
+            <th class="mdl-data-table__cell--non-numeric">Mundo</th>
+            <th class="mdl-data-table__cell--non-numeric">Status</th>
+            <th class="mdl-data-table__cell--non-numeric">Deleted</th>
+            <th class="mdl-data-table__cell--non-numeric">Main</th>
+            <th class="mdl-data-table__cell--non-numeric">Traded</th>
+          
+          </tr>
+        </thead>
+          <tbody id="tabla">
+          <tr v-for="info_personaje in otros_personajes" :key="info_personaje">
+            <td class="mdl-data-table__cell--non-numeric">{{info_personaje.name}}</td>
+            <td class="mdl-data-table__cell--non-numeric">{{info_personaje.world}}</td>
+            <td class="mdl-data-table__cell--non-numeric">{{info_personaje.status}}</td>
+            <td class="mdl-data-table__cell--non-numeric">{{info_personaje.deleted}}</td>
+            <td class="mdl-data-table__cell--non-numeric">{{info_personaje.main}}</td>
+            <td class="mdl-data-table__cell--non-numeric">{{info_personaje.traded}}</td>
+          </tr> 
+        </tbody>
+    </table> 
 </div>
 
 </main>
