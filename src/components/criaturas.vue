@@ -9,17 +9,17 @@ export default {
             table_creature: false
         }
     }, mounted(){
-        this.spinner_loadin = true
-        setTimeout(() => {
-            obtenerCriaturas().then((data)=>{
+
+        let Criaturas = obtenerCriaturas().then((data)=>{
             this.boosData = data.creatures.boosted
             this.criaturas = data.creatures.creature_list
             this.table_creature = true
-          })
-        }, 1000);
-        setTimeout(() => {
             this.spinner_loadin = false
-        }, 3000);
+          })
+
+        setTimeout(() => {
+            Criaturas
+        }, 5000);
     }
 }
 
