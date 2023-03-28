@@ -3,6 +3,7 @@ import blessings_vista from "../components/blessings.vue";
 import experiencia_compartida from "../components/experiencia_compartida.vue";
 import personajes_tibia from "../components/personajes.vue"
 import stamina_tibia from '../components/stamina.vue'
+import lista_mundos from "../components/mundos.vue";
 export default {
     name: 'menu_inicio',
     data(){
@@ -15,7 +16,8 @@ export default {
       blessings_vista,
       experiencia_compartida,
       personajes_tibia,
-      stamina_tibia
+      stamina_tibia,
+      lista_mundos
     }, methods:{
       PlayersOnline(){
         Rashid()
@@ -84,7 +86,7 @@ function playerOnline() {
         <a class="mdl-navigation__link"  @click="menus='experiencia_compartida'">Experiencia Compartida</a>
         <a class="mdl-navigation__link"  @click="menus='personajes'">Personajes</a>
         <a class="mdl-navigation__link" @click="menus = 'stamina'">Stamina</a>
-        <a class="mdl-navigation__link" >Mundos</a>
+        <a class="mdl-navigation__link" @click="menus = 'lista_mundos'">Mundos</a>
         <a class="mdl-navigation__link" >Información de Mundos</a>
         <a class="mdl-navigation__link" >Criaturas</a>
       </nav>
@@ -94,6 +96,7 @@ function playerOnline() {
 <experiencia_compartida v-show="menus === 'experiencia_compartida'"></experiencia_compartida>
 <personajes_tibia v-show="menus === 'personajes'"></personajes_tibia>
 <stamina_tibia v-show="menus==='stamina'"></stamina_tibia>
+<lista_mundos v-show="menus==='lista_mundos'"></lista_mundos>
 </template>
 
 <style>
