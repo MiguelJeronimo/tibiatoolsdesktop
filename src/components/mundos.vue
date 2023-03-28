@@ -3,19 +3,24 @@
         name: 'lista_mundos',
         data(){
             return{
-                mundos: null
+                mundos: null,
+                spinner_loadin: true,
+                table_mundos: false
             }
         },
         mounted() {
             setInterval(() => {
                 obtenerMundos().then((data)=>{
-                this.mundos = data.worlds.regular_worlds
-            })
+                    this.mundos = data.worlds.regular_worlds
+                    this.table_mundos = true
+                })
+            }, 1000);
+
+            setTimeout(() => {
+                this.spinner_loadin = false
             }, 5000);
         }
     }
-    
-
 async function obtenerMundos(){
     let url = 'https://api.tibiadata.com/v3/worlds';
     let respuesta = fetch(url)
@@ -28,13 +33,13 @@ async function obtenerMundos(){
 <main class="mdl-layout__content barraOpciones tablas contenedor">
 
 <div class="page-content">
+    <br><br><br>
   <div class="titulo"><h4>Mundos</h4></div>
   <div class="titulo">
-
 </div>
-
 <div class="tabla" id="tabla"> 
-<table class="mdl-data-table mdl-js-data-table with=1000px">
+<div class="spinner" style="text-align: center;" v-if="spinner_loadin == true"></div>
+<table class="mdl-data-table mdl-js-data-table with=1000px" v-if="table_mundos==true">
   <thead>
     <tr>
       <th class="mdl-data-table__cell--non-numeric">Mundo</th>
@@ -63,5 +68,6 @@ async function obtenerMundos(){
 </main>
 </template>
 <style scoped>
+    @import '../assets/css/spinner.css';
     @import '../assets/css/character.css';
 </style>

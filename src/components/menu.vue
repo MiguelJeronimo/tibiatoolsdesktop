@@ -5,6 +5,7 @@ import personajes_tibia from "../components/personajes.vue"
 import stamina_tibia from '../components/stamina.vue'
 import lista_mundos from "../components/mundos.vue";
 import informacion_mundos from "../components/informacion_mundos.vue"
+import criaturas_tibia from "../components/criaturas.vue"
 export default {
     name: 'menu_inicio',
     data(){
@@ -19,7 +20,8 @@ export default {
       personajes_tibia,
       stamina_tibia,
       lista_mundos,
-      informacion_mundos
+      informacion_mundos,
+      criaturas_tibia
     }, methods:{
       PlayersOnline(){
         Rashid()
@@ -55,13 +57,13 @@ function playerOnline() {
     });
   }
 
-  async function Rashid() {
+async function Rashid() {
     let url = `https://api.tibialabs.com/v1/rashid/city`;
     let rashid;
     rashid = fetch(url)
     let respuesta = (await rashid).text()
     return respuesta
-  }
+}
 </script>
 
 <template>
@@ -90,7 +92,7 @@ function playerOnline() {
         <a class="mdl-navigation__link" @click="menus = 'stamina'">Stamina</a>
         <a class="mdl-navigation__link" @click="menus = 'lista_mundos'">Mundos</a>
         <a class="mdl-navigation__link" @click="menus = 'informacion_mundos'">Información de Mundos</a>
-        <a class="mdl-navigation__link" >Criaturas</a>
+        <a class="mdl-navigation__link" @click="menus = 'criaturas_tibia'">Criaturas</a>
       </nav>
     </div>
 </div>
@@ -98,8 +100,9 @@ function playerOnline() {
 <experiencia_compartida v-show="menus === 'experiencia_compartida'"></experiencia_compartida>
 <personajes_tibia v-show="menus === 'personajes'"></personajes_tibia>
 <stamina_tibia v-show="menus==='stamina'"></stamina_tibia>
-<lista_mundos v-show="menus==='lista_mundos'"></lista_mundos>
+<lista_mundos v-if="menus==='lista_mundos'"></lista_mundos>
 <informacion_mundos v-show="menus ==='informacion_mundos'"></informacion_mundos>
+<criaturas_tibia v-if="menus === 'criaturas_tibia'"></criaturas_tibia>
 </template>
 
 <style>
