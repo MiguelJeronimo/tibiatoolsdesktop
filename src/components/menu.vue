@@ -7,7 +7,8 @@ export default {
     name: 'menu_inicio',
     data(){
       return {
-        menus: 'blesings_vista'
+        menus: 'blesings_vista',
+        rashid:''
       }
     }, 
     components:{
@@ -15,14 +16,50 @@ export default {
       experiencia_compartida,
       personajes_tibia,
       stamina_tibia
+    }, methods:{
+      PlayersOnline(){
+        playerOnline()
+        Rashid()
+        .then((data)=>{
+            this.rashid = `Hoy Rashid se encuentra en ${data}` 
+          }
+        )
+      }
     }
 }
+
+function playerOnline() {
+    let url = `https://api.tibiadata.com/v3/worlds`;
+    let personaje_online = document.getElementById('personaje_online');
+    let onlines;
+    fetch(url)
+    .then((resp) => resp.json())
+    .then(function (data) {
+       try {
+        onlines = data.worlds.players_online;
+        personaje_online.innerText= 'Personajes online: '+onlines;
+       } catch (error) {
+           console.log(error);
+       }
+    }).catch(function (error) {
+        console.log(error.error());
+    });
+  }
+
+  async function Rashid() {
+    let url = `https://api.tibialabs.com/v1/rashid/city`;
+    let rashid;
+    rashid = fetch(url)
+    let respuesta = (await rashid).text()
+    return respuesta
+  }
 </script>
 
 <template>
 <!-- Always shows a header, even in smaller screens. -->
 
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  {{PlayersOnline()}}
     <header class=" barraOpciones mdl-layout__header">
       <div class="mdl-layout__header-row">
         <!-- Title -->
@@ -31,7 +68,7 @@ export default {
         <div class="mdl-layout-spacer"></div>
         <!-- Navigation. We hide it in small screens. -->
         <nav class="mdl-navigation online">
-          <spam class="mdl-navigation__link online" id="rashid"></spam>
+          <spam class="mdl-navigation__link online" id="rashid"><img src="../assets/img/rashid.gif">{{rashid}}</spam>
           <spam id="personaje_online"></spam>
         </nav>
       </div>
