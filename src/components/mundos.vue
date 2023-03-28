@@ -18,7 +18,7 @@
                     //ocultar el spinner
                     this.spinner_loadin = false
                 })
-            }, 1000);
+            }, 5000);
             //dandole tiempo de 3 segundos para que puedar ejecutar el spinner
             //y despues eliminarlo
             setTimeout(() => {
