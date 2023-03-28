@@ -12,22 +12,40 @@ export default {
             type:'-',
             battlEye:'-',
             world_quest:'',
-            players_online:''
+            players_online:'',
+            spinner_loadin: false,
+            tablas: false
         }
     },methods:{
         Select(world){
             if (world != '') {
-                InfoWorlds(world).then((data)=>{
-                    this.mundo = data.worlds.world.name;
-                    this.players = data.worlds.world.players_online;
-                    this.Record = data.worlds.world.record_players +' Players el: '+data.worlds.world.record_date;
-                    this.creation_date = data.worlds.world.creation_date;
-                    this.Location = data.worlds.world.location;
-                    this.type = data.worlds.world.pvp_type;
-                    this.battlEye = data.worlds.world.battleye_protected;
-                    this.world_quest = data.worlds.world.world_quest_titles
-                    this.players_online = data.worlds.world.online_players
+              this.spinner_loadin= true
+              this.tablas = false
+              this.mundo = '-'
+              this.players = '-'
+              this.Record = '-'
+              this.creation_date = '-'
+              this.Location = '-'
+              this.type = '-'
+              this.battlEye = '-'
+              this.world_quest = ''
+              this.players_online = ''
+              let Informacion = InfoWorlds(world).then((data)=>{
+                  this.mundo = data.worlds.world.name;
+                  this.players = data.worlds.world.players_online;
+                  this.Record = data.worlds.world.record_players +' Players el: '+data.worlds.world.record_date;
+                  this.creation_date = data.worlds.world.creation_date;
+                  this.Location = data.worlds.world.location;
+                  this.type = data.worlds.world.pvp_type;
+                  this.battlEye = data.worlds.world.battleye_protected;
+                  this.world_quest = data.worlds.world.world_quest_titles
+                  this.players_online = data.worlds.world.online_players
+                  this.spinner_loadin = false,
+                  this.tablas = true
                 })
+                setTimeout(() => {
+                  Informacion
+                }, 2000);
             } else{
                     this.mundo = '-'
                     this.players = '-'
@@ -38,6 +56,8 @@ export default {
                     this.battlEye = '-'
                     this.world_quest = ''
                     this.players_online = ''
+                    this.spinner_loadin = false
+                    this.tablas = false
             }
         }
     },
@@ -101,15 +121,14 @@ async function InfoWorlds(world) {
 
               <div class="mdl-cell mdl-cell--6-col-phone"><strong>BattlEye Status:</strong></div>
               <div class="mdl-cell mdl-cell--2-col-phone" id="battleeye">{{battlEye}}</div>
-
           </div>
   </div>
 </div>
-
 <div class="worldQuest">
-  <h5>Quest World Title</h5>
+  <h5 v-if="tablas == true">Quest World Title</h5>
+  <div class="spinner" style="text-align: center;" v-if="spinner_loadin == true"></div>
 </div>
-<div class="worldQuest">
+<div class="worldQuest" v-if="tablas == true">
   <ul class="demo-list-icon mdl-list" id="worldQuest">
     <li class="mdl-list__item" v-for="world in world_quest" :key="world">
         <span class="mdl-list__item-primary-content">
@@ -120,7 +139,7 @@ async function InfoWorlds(world) {
   </ul>
 </div>
 
-<div class="tabla" id="tabla"> 
+<div class="tabla" id="tabla" v-if="tablas == true"> 
 <table class="mdl-data-table mdl-js-data-table with=1000px">
   <thead>
     <tr>
