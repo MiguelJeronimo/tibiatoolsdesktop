@@ -9,16 +9,21 @@
             }
         },
         mounted() {
-            setInterval(() => {
+            //agregando la intermitencia a la tabla para imprimir los datos en tiempo real
+            let Mundos = setInterval(() => {
                 obtenerMundos().then((data)=>{
                     this.mundos = data.worlds.regular_worlds
+                    //apareciando la tabla una vez mostrado los datos
                     this.table_mundos = true
+                    //ocultar el spinner
+                    this.spinner_loadin = false
                 })
-            }, 1000);
-
+            }, 2000);
+            //dandole tiempo de 3 segundos para que puedar ejecutar el spinner
+            //y despues eliminarlo
             setTimeout(() => {
-                this.spinner_loadin = false
-            }, 5000);
+                Mundos
+            }, 3000);
         }
     }
 async function obtenerMundos(){
@@ -37,7 +42,7 @@ async function obtenerMundos(){
   <div class="titulo"><h4>Mundos</h4></div>
   <div class="titulo">
 </div>
-<div class="tabla" id="tabla"> 
+<div class="tabla" id="tabla">
 <div class="spinner" style="text-align: center;" v-if="spinner_loadin == true"></div>
 <table class="mdl-data-table mdl-js-data-table with=1000px" v-if="table_mundos==true">
   <thead>
