@@ -18,14 +18,19 @@ export default {
       stamina_tibia
     }, methods:{
       PlayersOnline(){
-        playerOnline()
         Rashid()
         .then((data)=>{
-            this.rashid = `Hoy Rashid se encuentra en ${data}` 
+            this.rashid = `Hoy Rashid se encuentra en ${data}`
           }
         )
       }
-    }
+    }, 
+    mounted: ()=>{
+      //cuando recarge la pagina mandamos a llamar la funcion playeronline y que se este ejecutando cada 5 segundos
+    setInterval(() => {
+        playerOnline()
+      }, 5000)
+    } 
 }
 
 function playerOnline() {
@@ -57,9 +62,8 @@ function playerOnline() {
 
 <template>
 <!-- Always shows a header, even in smaller screens. -->
-
+{{PlayersOnline()}}
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-  {{PlayersOnline()}}
     <header class=" barraOpciones mdl-layout__header">
       <div class="mdl-layout__header-row">
         <!-- Title -->
