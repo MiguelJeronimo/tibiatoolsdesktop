@@ -10,6 +10,8 @@ export default {
             tabla_muertes: false,
             tabla_informacion:false,
             tabla_otros_personajes: false,
+            spinner_loadin: false,
+            tablas: false,
             name:'',
             title:'',
             sex:'',
@@ -32,8 +34,16 @@ export default {
         BuscarPersonaje(){
             let nombre = this.$refs.ref_nombre
             if(nombre.value !== ''){
-                buscarPersonaje(nombre.value).then((data)=>{
-                    let name = data.characters.character.name;
+              this.spinner_loadin= true
+              this.mensaje_error = false
+              this.tabla_personajes = false
+              this.mensaje_error=false
+              this.tabla_casas = false
+              this.tabla_muertes = false
+              this.tabla_informacion = false
+              this.tabla_otros_personajes = false
+              let BuscarPersonaje = buscarPersonaje(nombre.value).then((data)=>{
+                let name = data.characters.character.name;
                     if(name ==''){
                         this.tabla_personajes = false
                         this.mensaje_error=true
@@ -41,6 +51,9 @@ export default {
                         this.tabla_muertes = false
                         this.tabla_informacion = false
                         this.tabla_otros_personajes = false
+                        this.tablas = true
+                        //ocultar el spinner
+                        this.spinner_loadin = false
                     } else{
                         //ponemos en true la tabla de personajes para que se pinte
                         this.tabla_personajes = true
@@ -101,8 +114,14 @@ export default {
                         } else{
                           this.tabla_otros_personajes = true
                         }
+                        this.tablas = true
+                        //ocultar el spinner
+                        this.spinner_loadin = false
                     }   
                 })
+                setTimeout(() => {
+                  BuscarPersonaje
+                }, 3000);
             } else{
                 let formulario = this.$refs.formulario
                 let leyendaError = this.$refs.leyenda_error
@@ -114,6 +133,9 @@ export default {
                 this.tabla_muertes = false
                 this.tabla_informacion = false
                 this.tabla_otros_personajes = false
+                this.table_mundos = true
+                //ocultar el spinner
+                this.spinner_loadin = false
             }
         }
     }
@@ -225,8 +247,10 @@ function otrosPersonajes(personajes) {
     <h5 class="titulo-tabla">Información del personaje</h5>
   </div >
   
-
-<div class="tabla" id="tabla" >
+ <div class="tabla" v-if="spinner_loadin == true">
+  <div class="spinner" style="text-align: center;"></div>
+ </div>
+<div class="tabla" id="tabla" v-if="tablas == true">
     <!--Tabla de la data de los personajes-->
     <table class="mdl-data-table mdl-js-data-table with=1000px" v-if="tabla_personajes==true">
             <tbody id="tabla">
@@ -290,8 +314,8 @@ function otrosPersonajes(personajes) {
         </spam>
 </div>
 
-<div class="tabla" id="tabla-houses" v-if="tabla_casas===true">
-  <table class="mdl-data-table mdl-js-data-table with=1000px">
+<div class="tabla" id="tabla-houses" v-if="tablas == true">
+  <table class="mdl-data-table mdl-js-data-table with=1000px" v-if="tabla_casas===true">
           <caption>Casas</caption>
           <tbody id="tabla">
             <tr v-for="house in houses" :key="house">
@@ -301,8 +325,8 @@ function otrosPersonajes(personajes) {
           </tbody>
     </table>
 </div>
-<div class="tabla" id="tabla-muertes" v-if="tabla_muertes===true"> 
-  <table class="mdl-data-table mdl-js-data-table with=1000px">
+<div class="tabla" id="tabla-muertes" v-if="tablas == true"> 
+  <table class="mdl-data-table mdl-js-data-table with=1000px" v-if="tabla_muertes===true">
           <caption>Muertes</caption>
           <tbody id="tabla">
             <tr v-for="muerte in muertes" :key="muerte">
@@ -313,8 +337,8 @@ function otrosPersonajes(personajes) {
           </tbody>
     </table>
 </div>
-<div class="tabla" id="tabla-informacion" v-if="tabla_informacion===true"> 
-  <table class="mdl-data-table mdl-js-data-table with=1000px">
+<div class="tabla" id="tabla-informacion" v-if="tablas == true"> 
+  <table class="mdl-data-table mdl-js-data-table with=1000px" v-if="tabla_informacion===true">
           <caption>Información de la cuenta</caption>
           <tbody id="tabla">
             <tr>
@@ -328,8 +352,8 @@ function otrosPersonajes(personajes) {
           </tbody>
     </table>
 </div>
-<div class="tabla" id="tabla-otros-personajes" v-if="tabla_otros_personajes===true">
-  <table class="mdl-data-table mdl-js-data-table with=1000px">
+<div class="tabla" id="tabla-otros-personajes" v-if="tablas == true">
+  <table class="mdl-data-table mdl-js-data-table with=1000px" v-if="tabla_otros_personajes===true">
           <caption>Otros personajes</caption>
           <thead>
           <tr>
@@ -358,7 +382,7 @@ function otrosPersonajes(personajes) {
 </main>
 </template>
 <style scoped>
-
+ @import '../assets/css/spinner.css';
  @import '../assets/css/character.css';
 
 </style>
