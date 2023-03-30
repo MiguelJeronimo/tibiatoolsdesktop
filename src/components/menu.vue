@@ -6,11 +6,12 @@ import stamina_tibia from '../components/stamina.vue'
 import lista_mundos from "../components/mundos.vue";
 import informacion_mundos from "../components/informacion_mundos.vue"
 import criaturas_tibia from "../components/criaturas.vue"
+import home_app from "../components/home.vue"
 export default {
     name: 'menu_inicio',
     data(){
       return {
-        menus: 'blesings_vista',
+        menus: 'home_app',
         rashid:''
       }
     }, 
@@ -21,7 +22,8 @@ export default {
       stamina_tibia,
       lista_mundos,
       informacion_mundos,
-      criaturas_tibia
+      criaturas_tibia,
+      home_app
     }, methods:{
       PlayersOnline(){
         Rashid()
@@ -86,6 +88,7 @@ async function Rashid() {
     <div class="mdl-layout__drawer barraOpciones">
       <span class="mdl-layout-title">TibiaTools</span>
       <nav class="mdl-navigation">
+        <a class="mdl-navigation__link"  @click=" menus = 'home_app'">Home</a>
         <a class="mdl-navigation__link"  @click=" menus = 'blesings_vista'">Blessings</a>
         <a class="mdl-navigation__link"  @click="menus='experiencia_compartida'">Experiencia Compartida</a>
         <a class="mdl-navigation__link"  @click="menus='personajes'">Personajes</a>
@@ -96,6 +99,7 @@ async function Rashid() {
       </nav>
     </div>
 </div>
+<home_app v-show="menus === 'home_app'"></home_app>
 <blessings_vista v-show="menus === 'blesings_vista'"></blessings_vista>
 <experiencia_compartida v-show="menus === 'experiencia_compartida'"></experiencia_compartida>
 <personajes_tibia v-show="menus === 'personajes'"></personajes_tibia>
