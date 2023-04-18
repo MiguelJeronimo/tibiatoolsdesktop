@@ -25,3 +25,6 @@ npm run electron:serve
 ```
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Version de nodejs:
+v12.22.12
